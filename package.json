@@ -11,10 +11,8 @@
     "progressive",
     "web",
     "app",
-    "complete",
-    "tutorial"
   ],
-  "author": "Maximilian Schwarzmüller",
+  "author": "Mohamad Arbash",
   "license": "ISC",
   "devDependencies": {
     "http-server": "^0.9.0"
