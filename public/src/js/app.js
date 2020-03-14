@@ -8,7 +8,7 @@ if (!window.Promise) {
 
 
 if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/sw.js", {scope: "/help/"})
+    navigator.serviceWorker.register("/sw.js", {scope: "./"})
         .then(function () {
             console.log("sw is registered")
         });
