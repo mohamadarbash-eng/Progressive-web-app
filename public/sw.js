@@ -11,6 +11,7 @@ self.addEventListener('install', function(event) {
                     '/',
                     '/index.html',
                     '/src/js/app.js',
+                    '/offline.html',
                     '/src/js/feed.js',
                     '/src/js/promise.js',
                     '/src/js/fetch.js',
@@ -54,7 +55,11 @@ self.addEventListener('fetch', (event) => {
                                   //  cache.put(event.request.url, res.clone());
                                     return res;
                                 })
-                        }).catch();
+                        }).catch(() => {
+                            return caches.open(staticName).then((cache)=> {
+                                return  cache.match('/offline.html');
+                            })
+                        });
                 }
             })
     );
