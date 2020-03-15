@@ -34,6 +34,11 @@ shareImageButton.addEventListener('click', openCreatePostModal);
 closeCreatePostModalButton.addEventListener('click', closeCreatePostModal);
 
 
+function clearCards() {
+  while (sharedMomentsArea.hasChildNodes()) {
+    sharedMomentsArea.removeChild(sharedMomentsArea.lastChild);
+  }
+}
 
 function createCard() {
   var cardWrapper = document.createElement('div');
@@ -61,11 +66,26 @@ function createCard() {
   sharedMomentsArea.appendChild(cardWrapper);
 }
 
-
+var networkData = false;
 fetch('https://httpbin.org/get')
     .then(function(res) {
       return res.json();
     })
     .then(function(data) {
+      networkData = true;
+      clearCards();
       createCard();
     });
+
+if ('caches' in window) {
+  caches.match('https://httpbin.org/get')
+      .then(function (response) {
+        if (response) {
+          return response.json();
+        }
+      }).then(function (data) {
+        if (!networkData) {
+          createCard();
+        }
+  })
+}
