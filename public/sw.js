@@ -79,12 +79,14 @@ self.addEventListener("fetch", (event) => {
         event.respondWith(fetch(event.request)
                 .then(function (res) {
                     var clonesRes = res.clone();
-                    clonesRes.json()
-                        .then((data) => {
-                            for (var key in data) {
-                                writeData("posts", data[key]);
-                            }
-                        });
+                    clearAllData("posts")
+                        .then(() => {
+                            return clonesRes.json();
+                        }).then((data) => {
+                        for (var key in data) {
+                            writeData("posts", data[key]);
+                        }
+                    });
                     return res;
                 })
             /*   caches.open(dynamicName)
