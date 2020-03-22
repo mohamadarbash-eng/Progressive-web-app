@@ -112,7 +112,3 @@ self.addEventListener('fetch', (event) => {
             );
     }
 });
-
-/*
-
- */
