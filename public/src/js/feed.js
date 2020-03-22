@@ -53,7 +53,7 @@ function createCard(data) {
     cardWrapper.className = "shared-moment-card mdl-card mdl-shadow--2dp";
     var cardTitle = document.createElement("div");
     cardTitle.className = "mdl-card__title";
-    cardTitle.style.backgroundImage = 'url(' + data.image + ')';
+    cardTitle.style.backgroundImage = "url(" + data.image + ")";
     cardTitle.style.backgroundSize = "cover";
     cardTitle.style.height = "180px";
     cardWrapper.appendChild(cardTitle);
@@ -75,9 +75,9 @@ function createCard(data) {
 }
 
 function updateUI(data) {
-  for (var i=0; i < data.length; i++) {
-    createCard(data[i]);
-  }
+    for (var i = 0; i < data.length; i++) {
+        createCard(data[i]);
+    }
 }
 
 var networkData = false;
@@ -86,14 +86,21 @@ fetch(url).then(function (res) {
     return res.json();
 })
     .then(function (data) {
-      console.log(data);
+        console.log(data);
         networkData = true;
         const dataArray = [];
         for (var key in data) {
-          dataArray.push(data[key]);
+            dataArray.push(data[key]);
         }
         updateUI(dataArray)
     });
+if ("indexedDB" in window) {
+    readData("posts").then((data) => {
+        if (!networkData && data) {
+            updateUI(data)
+        }
+    })
+}
 
 if ("caches" in window) {
     caches.match(url)
@@ -103,11 +110,11 @@ if ("caches" in window) {
             }
         }).then(function (data) {
         if (!networkData) {
-          const dataArray = [];
-          for (var key in data) {
-            dataArray.push(data[key]);
-          }
-          updateUI(dataArray)
+            const dataArray = [];
+            for (var key in data) {
+                dataArray.push(data[key]);
+            }
+            updateUI(dataArray)
         }
     })
 }

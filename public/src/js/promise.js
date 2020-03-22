@@ -4,13 +4,14 @@
  * Released under the MIT license
  * github.com/Octane/setImmediate
  */
-window.setImmediate || function () {'use strict';
+window.setImmediate || function () {
+    "use strict";
 
     var uid = 0;
     var storage = {};
     var firstCall = true;
     var slice = Array.prototype.slice;
-    var message = 'setImmediatePolyfillMessage';
+    var message = "setImmediatePolyfillMessage";
 
     function fastApply(args) {
         var func = args[0];
@@ -28,7 +29,7 @@ window.setImmediate || function () {'use strict';
     function callback(event) {
         var key = event.data;
         var data;
-        if (typeof key == 'string' && key.indexOf(message) == 0) {
+        if (typeof key == "string" && key.indexOf(message) == 0) {
             data = storage[key];
             if (data) {
                 delete storage[key];
@@ -48,9 +49,9 @@ window.setImmediate || function () {'use strict';
         storage[key] = args;
         if (firstCall) {
             firstCall = false;
-            window.addEventListener('message', callback);
+            window.addEventListener("message", callback);
         }
-        window.postMessage(key, '*');
+        window.postMessage(key, "*");
         return id;
     };
 
@@ -68,24 +69,25 @@ window.setImmediate || function () {'use strict';
  * Released under the MIT license
  * github.com/Octane/Promise
  */
-(function (global) {'use strict';
+(function (global) {
+    "use strict";
 
-    var STATUS = '[[PromiseStatus]]';
-    var VALUE = '[[PromiseValue]]';
-    var ON_FUlFILLED = '[[OnFulfilled]]';
-    var ON_REJECTED = '[[OnRejected]]';
-    var ORIGINAL_ERROR = '[[OriginalError]]';
-    var PENDING = 'pending';
-    var INTERNAL_PENDING = 'internal pending';
-    var FULFILLED = 'fulfilled';
-    var REJECTED = 'rejected';
-    var NOT_ARRAY = 'not an array.';
-    var REQUIRES_NEW = 'constructor Promise requires "new".';
-    var CHAINING_CYCLE = 'then() cannot return same Promise that it resolves.';
+    var STATUS = "[[PromiseStatus]]";
+    var VALUE = "[[PromiseValue]]";
+    var ON_FUlFILLED = "[[OnFulfilled]]";
+    var ON_REJECTED = "[[OnRejected]]";
+    var ORIGINAL_ERROR = "[[OriginalError]]";
+    var PENDING = "pending";
+    var INTERNAL_PENDING = "internal pending";
+    var FULFILLED = "fulfilled";
+    var REJECTED = "rejected";
+    var NOT_ARRAY = "not an array.";
+    var REQUIRES_NEW = "constructor Promise requires \"new\".";
+    var CHAINING_CYCLE = "then() cannot return same Promise that it resolves.";
 
-    var setImmediate = global.setImmediate || require('timers').setImmediate;
+    var setImmediate = global.setImmediate || require("timers").setImmediate;
     var isArray = Array.isArray || function (anything) {
-        return Object.prototype.toString.call(anything) == '[object Array]';
+        return Object.prototype.toString.call(anything) == "[object Array]";
     };
 
     function InternalError(originalError) {
@@ -102,7 +104,7 @@ window.setImmediate || function () {'use strict';
     }
 
     function isCallable(anything) {
-        return typeof anything == 'function';
+        return typeof anything == "function";
     }
 
     function isPromise(anything) {
@@ -155,7 +157,7 @@ window.setImmediate || function () {'use strict';
         if (isPromise(anything)) {
             return anything;
         }
-        if(isObject(anything)) {
+        if (isObject(anything)) {
             try {
                 then = anything.then;
             } catch (error) {
@@ -182,14 +184,16 @@ window.setImmediate || function () {'use strict';
                 fulfillPromise(promise, value);
             }
         }
+
         function reject(reason) {
             if (promise[STATUS] == PENDING) {
                 rejectPromise(promise, reason);
             }
         }
+
         try {
             resolver(resolve, reject);
-        } catch(error) {
+        } catch (error) {
             reject(error);
         }
     }
@@ -260,12 +264,15 @@ window.setImmediate || function () {'use strict';
                     call(resolve, reject, value);
                 }
             }
+
             function asyncOnFulfilled() {
                 setImmediate(tryCall, onFulfilled);
             }
+
             function asyncOnRejected() {
                 setImmediate(tryCall, onRejected);
             }
+
             switch (promise[STATUS]) {
                 case FULFILLED:
                     asyncOnFulfilled();
@@ -280,7 +287,7 @@ window.setImmediate || function () {'use strict';
         return nextPromise;
     };
 
-    Promise.prototype['catch'] = function (onRejected) {
+    Promise.prototype["catch"] = function (onRejected) {
         return this.then(identity, onRejected);
     };
 
@@ -363,7 +370,7 @@ window.setImmediate || function () {'use strict';
         });
     };
 
-    if (typeof module != 'undefined' && module.exports) {
+    if (typeof module != "undefined" && module.exports) {
         module.exports = global.Promise || Promise;
     } else if (!global.Promise) {
         global.Promise = Promise;
