@@ -1,11 +1,11 @@
-var dbPromise = idb.open('feed-store', 1, function (db) {
-    if (!db.objectStoreNames.contains('posts')) {
-        db.createObjectStore('posts', {keyPath: 'id'});
+var dbPromise = idb.open("feed-store", 1, function (db) {
+    if (!db.objectStoreNames.contains("posts")) {
+        db.createObjectStore("posts", {keyPath: "id"});
     }
 });
 
 function writeData(st, data) {
-  return dbPromise.then((db) => {
+    return dbPromise.then((db) => {
         var tx = db.transaction(st, "readwrite");
         var store = tx.objectStore(st);
         store.put(data);
@@ -14,7 +14,7 @@ function writeData(st, data) {
 }
 
 function readData(st) {
-   return  dbPromise.then((db) => {
+    return dbPromise.then((db) => {
         var tx = db.transaction(st, "readonly");
         var store = tx.objectStore(st);
         return store.getAll();
@@ -22,10 +22,21 @@ function readData(st) {
 }
 
 function clearAllData(st) {
-   return  dbPromise.then((db) => {
+    return dbPromise.then((db) => {
         var tx = db.transaction(st, "readwrite");
         var store = tx.objectStore(st);
         store.clear();
         return tx.complete;
     });
+}
+
+function deleteItemFromIdb(st, id) {
+    return dbPromise.then((db) => {
+        var tx = db.transaction(st, "readwrite");
+        var store = tx.objectStore(st);
+        store.delete(id);
+        return tx.complete;
+    }).then(() => {
+        alert("item is deleted!!")
+    })
 }
