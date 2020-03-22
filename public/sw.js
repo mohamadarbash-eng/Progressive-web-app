@@ -69,7 +69,7 @@ self.addEventListener('activate', function(event) {
 
 // cache then network
 self.addEventListener('fetch', (event) => {
-    var url = 'https://httpbin.org/get';
+    var url = 'https://pwa2020-d6252.firebaseio.com/posts.json';
     if (event.request.url.indexOf(url) > -1) {
         event.respondWith(
             caches.open(dynamicName)
