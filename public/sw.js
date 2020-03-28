@@ -132,3 +132,36 @@ self.addEventListener("fetch", (event) => {
         );
     }
 });
+
+self.addEventListener("sync", (event) => {
+    console.log("sync");
+    if (event.tag === "syncNewPost") {
+        console.log("synced");
+        event.waitUntil(
+            readData("sync-post").then((data) => {
+                for (dt of data) {
+                    fetch("https://pwa2020-d6252.firebaseio.com/posts.json", {
+                        method: "POST",
+                        headers: {
+                            "Content-type": "application/json",
+                            "Accept": "application/json"
+                        },
+                        body: JSON.stringify({
+                            id: dt.id,
+                            title: dt.title,
+                            location: dt.location,
+                            image: dt.image
+                        })
+                    }).then((res) => {
+                        alert("synced", dt.id);
+                        if (res.ok) {
+                            deleteItemFromIdb("sync-post", dt.id)
+                        }
+                    }).catch(() => {
+                        // do it
+                    });
+                }
+            })
+        );
+    }
+});

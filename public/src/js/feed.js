@@ -58,7 +58,6 @@ function createCard(data) {
     cardTitle.className = "mdl-card__title";
     cardTitle.style.backgroundImage = "url(" + data.image + ")";
     cardTitle.style.backgroundSize = "cover";
-    cardTitle.style.height = "180px";
     cardWrapper.appendChild(cardTitle);
     var cardTitleTextElement = document.createElement("h2");
     cardTitleTextElement.className = "mdl-card__title-text";
@@ -130,13 +129,14 @@ function sendData() {
             "Accept": "application/json"
         },
         body: JSON.stringify({
-            id: new Date(),
+            id: new Date().toISOString(),
             title: titleInput.value,
             location: locationInput.value,
             image: "https://firebasestorage.googleapis.com/v0/b/pwa2020-d6252.appspot.com/o/Download.png?alt=media&token=e718e62b-9bd8-4a23-91dc-32819b9e5223"
         })
-    }).then(() => {
+    }).then((data) => {
         alert("good job");
+        updateUI(data);
     });
 }
 
@@ -147,7 +147,7 @@ form.addEventListener("submit", function (event) {
     }
     closeCreatePostModal();
 
-    if ("serviceWorker" in window && "SyncManager" in window) {
+    if ("serviceWorker" in navigator && "SyncManager" in window) {
         navigator.serviceWorker.ready.then((sw) => {
             var post = {
                 id: new Date().toISOString(),
@@ -159,7 +159,7 @@ form.addEventListener("submit", function (event) {
             }).then(() => {
                 var snackBarContainer = document.querySelector("confirmation-toast");
                 var data = {message: "your post ist saved for Syncing"};
-                snackBarContainer.MaterialSnackbar.showSnackbar(data);
+                snackBarContainer.MaterialSnackbar.show(data);
             }).catch(() => {
                 alert("something ist went wrong");
             })
