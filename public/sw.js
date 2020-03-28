@@ -140,7 +140,7 @@ self.addEventListener("sync", (event) => {
         event.waitUntil(
             readData("sync-post").then((data) => {
                 for (dt of data) {
-                    fetch("https://pwa2020-d6252.firebaseio.com/posts.json", {
+                    fetch("https://us-central1-pwa2020-d6252.cloudfunctions.net/storePostData", {
                         method: "POST",
                         headers: {
                             "Content-type": "application/json",
@@ -155,7 +155,10 @@ self.addEventListener("sync", (event) => {
                     }).then((res) => {
                         alert("synced", dt.id);
                         if (res.ok) {
-                            deleteItemFromIdb("sync-post", dt.id)
+                          return res.json()
+                               .then((data) => {
+                                   deleteItemFromIdb("sync-post", data.id)
+                               })
                         }
                     }).catch(() => {
                         // do it

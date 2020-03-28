@@ -122,7 +122,7 @@ if ("caches" in window) {
 }
 
 function sendData() {
-    fetch("https://pwa2020-d6252.firebaseio.com/posts.json", {
+    fetch("https://us-central1-pwa2020-d6252.cloudfunctions.net/storePostData", {
         method: "POST",
         headers: {
             "Content-type": "application/json",
