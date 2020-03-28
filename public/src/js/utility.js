@@ -2,6 +2,10 @@ var dbPromise = idb.open("feed-store", 1, function (db) {
     if (!db.objectStoreNames.contains("posts")) {
         db.createObjectStore("posts", {keyPath: "id"});
     }
+// you creat function to reduce duplicated code
+    if (!db.objectStoreNames.contains("sync-post")) {
+        db.createObjectStore("sync-post", {keyPath: "id"});
+    }
 });
 
 function writeData(st, data) {
