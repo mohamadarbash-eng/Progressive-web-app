@@ -1,5 +1,5 @@
 var deferredPrompt;
-
+var enableNotificationButtons = document.querySelectorAll('.enable-notifications');
 
 if (!window.Promise) {
     window.Promise = Promise;
@@ -19,3 +19,22 @@ window.addEventListener("beforeinstallpromt", function (event) {
     event.preventDefault();
     return false;
 });
+
+function askForNotificationPermission() {
+    Notification.requestPermission((result)=> {
+        console.log('result', result);
+        if (result !== 'granted') {
+            console.log('you are bad user :P');
+        } else {
+
+        }
+
+    })
+}
+
+if ('Notification' in window) {
+    for (var i= 0; i < enableNotificationButtons.length; i++) {
+        enableNotificationButtons[i].style.display = 'inline-block';
+        enableNotificationButtons[i].addEventListener('click', askForNotificationPermission);
+    }
+}
