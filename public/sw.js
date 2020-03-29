@@ -168,3 +168,26 @@ self.addEventListener("sync", (event) => {
         );
     }
 });
+
+
+self.addEventListener('notificationclick', (event) => {
+    var notification = event.notification;
+    var action = event.action;
+
+    console.log(notification);
+
+    if (action === 'confirm') {
+       console.log('we love you');
+        notification.close();
+    } else {
+        console.log('we hate you :P');
+        notification.close();
+    }
+});
+
+self.addEventListener('notificationclose', (event) => {
+   console.log(event);
+});
+
+
+
