@@ -22,7 +22,13 @@ window.addEventListener("beforeinstallpromt", function (event) {
 
 function displayConfirmation() {
     var options = {
-        body: 'You are successfully subscribed to our Notifications System'
+        body: 'You are successfully subscribed to our Notifications System',
+        icon: '/src/images/icons/app-icon-96x96.png',
+        image: '/src/images/sf-boat.jpg',
+        dir: 'ltr',
+        lang: 'en-US', //BCP 47
+        vibrate: [100, 50, 200],
+        badge: '/src/images/icons/app-icon-96x96.png'
     };
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.ready.then((swReady) => {
