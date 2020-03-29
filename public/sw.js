@@ -155,10 +155,10 @@ self.addEventListener("sync", (event) => {
                     }).then((res) => {
                         alert("synced", dt.id);
                         if (res.ok) {
-                          return res.json()
-                               .then((data) => {
-                                   deleteItemFromIdb("sync-post", data.id)
-                               })
+                            return res.json()
+                                .then((data) => {
+                                    deleteItemFromIdb("sync-post", data.id)
+                                })
                         }
                     }).catch(() => {
                         // do it
@@ -170,23 +170,23 @@ self.addEventListener("sync", (event) => {
 });
 
 
-self.addEventListener('notificationclick', (event) => {
+self.addEventListener("notificationclick", (event) => {
     var notification = event.notification;
     var action = event.action;
 
     console.log(notification);
 
-    if (action === 'confirm') {
-       console.log('we love you');
+    if (action === "confirm") {
+        console.log("we love you");
         notification.close();
     } else {
-        console.log('we hate you :P');
+        console.log("we hate you :P");
         notification.close();
     }
 });
 
-self.addEventListener('notificationclose', (event) => {
-   console.log(event);
+self.addEventListener("notificationclose", (event) => {
+    console.log(event);
 });
 
 
