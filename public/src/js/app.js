@@ -20,6 +20,43 @@ window.addEventListener("beforeinstallpromt", function (event) {
     return false;
 });
 
+function configurePushSub() {
+    if (!('serviceWorker' in navigator)) {
+        return;
+    }
+    var reg;
+    navigator.serviceWorker.ready.then((swReady) => {
+        reg = swReady;
+      return swReady.pushManager.getSubscription()
+    }).then((sub) => {
+        if(sub === null) {
+            var vapidPublicKey = "BBbgF-w2JrciZaebD_50vam6CdFWgQ4bPHXJOpqANW0eKI2N93OwIhEGU_QkwxNTO13p53WWYlReoU_2yXH1Znc";
+            var convertedPublicWebKey = urlBase64ToUint8Array(vapidPublicKey);
+            reg.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: convertedPublicWebKey
+            });
+        } else {
+
+        }
+    }).then((newSub) => {
+        fetch('https://pwa2020-d6252.firebaseio.com/subscribtions.json', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(newSub)
+        }).then((res) => {
+           if (res.ok) {
+               displayConfirmation();
+           }
+        }).catch(() => {
+            console.error(err);
+        })
+    });
+}
+
 function displayConfirmation() {
     var options = {
         body: 'You are successfully subscribed to our Notifications System',
@@ -54,7 +91,8 @@ function askForNotificationPermission() {
         if (result !== 'granted') {
             console.log('you are bad user :P');
         } else {
-            displayConfirmation();
+          //  displayConfirmation();
+            configurePushSub();
         }
 
     })
