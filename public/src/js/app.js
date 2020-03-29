@@ -20,13 +20,20 @@ window.addEventListener("beforeinstallpromt", function (event) {
     return false;
 });
 
+function displayConfirmation() {
+    var options = {
+        body: 'You are successfully subscribed to our Notifications System'
+    };
+    new Notification('Thanks! ;)', options);
+}
+
 function askForNotificationPermission() {
     Notification.requestPermission((result)=> {
         console.log('result', result);
         if (result !== 'granted') {
             console.log('you are bad user :P');
         } else {
-
+            displayConfirmation();
         }
 
     })
