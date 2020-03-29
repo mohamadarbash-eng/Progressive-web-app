@@ -24,7 +24,11 @@ function displayConfirmation() {
     var options = {
         body: 'You are successfully subscribed to our Notifications System'
     };
-    new Notification('Thanks! ;)', options);
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.ready.then((swReady) => {
+            swReady.showNotification('Thanks! ;) from SW', options)
+        });
+    }
 }
 
 function askForNotificationPermission() {
